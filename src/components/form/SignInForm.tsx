@@ -11,8 +11,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Button, buttonVariants } from '../ui/button';
+import { Button } from '../ui/button';
 import { useForm } from 'react-hook-form';
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signIn } from 'next-auth/react';
 
 const FormSchema = z.object({
   email: z
@@ -25,6 +28,7 @@ const FormSchema = z.object({
     .min(8, 'Le mot de passe doit contenir 8 caractères minimum'),
 });
 const SignInForm = () => {
+  const router = useRouter();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -33,19 +37,19 @@ const SignInForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof FormSchema>) => {
+  const onSubmit = async (values: z.infer<typeof FormSchema>) => {
     console.log(values);
-    // const signInData = await signIn('credentials', {
-    //   email: values.email,
-    //   password: values.password,
-    //   redirect: false,
-    // });
-    // if (signInData?.error) {
-    //   console.log(signInData.error)
-    // } else {
-    //   router.refresh();
-    //   // router.push('/admin');
-    // }
+    const signInData = await signIn('credentials', {
+      email: values.email,
+      password: values.password,
+      redirect: false,
+    });
+    if (signInData?.error) {
+      console.log(signInData.error);
+    } else {
+      router.refresh();
+      router.push('/admin');
+    }
   };
 
   return (
@@ -97,6 +101,15 @@ const SignInForm = () => {
               </Button>
             </form>
           </Form>
+          <p className='text-center text-sm text-gray-600 mt-4'>
+            Vous n&apos;avez pas encore de compte ?&nbsp;
+            <Link
+              className='text-blue-500 hover:underline'
+              href='/inscription'
+            >
+              Inscrivez-vous !
+            </Link>
+          </p>
         </div>
       </div>
     </div>
