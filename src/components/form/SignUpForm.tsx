@@ -13,7 +13,6 @@ import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import Link from 'next/link';
 
 import { useRouter } from 'next/navigation';
 
@@ -69,16 +68,16 @@ const SignUpForm = () => {
     }
   };
   return (
-    <div className='h-screen flex flex-col justify-center'>
+    <div className='flex flex-col justify-center h-screen'>
       <div className='min-w-[300px] max-w-[500px] md:max-w-[500px] md:min-w-[500px] mx-auto max-h-[95vh] shadow-2xl bg-[#151A30] rounded-xl font-semibold'>
-        <h1 className='pt-4 text-4xl lg:text-6xl text-center text-white'>
+        <h1 className='pt-4 text-4xl text-center text-white lg:text-6xl'>
           Inscription
         </h1>
-        <div className='p-8 h-full'>
+        <div className='h-full p-8'>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
-              className='w-full flex flex-col gap-y-4'
+              className='flex flex-col w-full gap-y-4'
             >
               <div className='space-y-4'>
                 <FormField
@@ -88,7 +87,10 @@ const SignUpForm = () => {
                     <FormItem>
                       <FormLabel>Pseudo</FormLabel>
                       <FormControl>
-                        <Input placeholder='Pseudo' {...field} />
+                        <Input
+                          placeholder='Pseudo'
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
